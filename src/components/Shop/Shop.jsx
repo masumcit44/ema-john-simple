@@ -33,7 +33,20 @@ const Shop = () => {
     const  [cart,setCart] = useState([])
     const handleAddToCart = (product)=>{
         // cart.push(product)
-        let newCart = [...cart,product]
+        let newCart = []
+        // let newCart = [...cart,product]
+        // if product doesnt exist in the cart , then set quantity = 1
+        // if product exist then update the by one
+        const exists = cart.find(pd => pd.id === product.id)
+        if(!exists){
+            product.quantity = 1
+            newCart = [...cart,product]
+        }
+        else{
+            exists.quantity = exists.quantity + 1
+            const remaining = cart.filter(pd=> pd.id !== product.id)
+            newCart = [...remaining,exists]
+        }       
         setCart(newCart)
         addToDb(product.id)        
       }
