@@ -1,3 +1,4 @@
+import { faSwatchbook } from '@fortawesome/free-solid-svg-icons';
 import React, { useEffect, useState } from 'react';
 import { addToDb, getShoppingCart } from '../../utilities/fakedb';
 import Cart from '../Cart/Cart';
@@ -13,8 +14,22 @@ const Shop = () => {
     },[])
     useEffect(()=>{
         const storedCart = getShoppingCart()
-        console.log(storedCart);
-    },[])
+        const savedCart = []
+        // step 1: get id of the savedProduct
+        for(const id in storedCart){
+            // step 2: get product from products by using id
+            const addedProduct = products.find(product=> product.id===id)
+            if(addedProduct){
+                // step 3: add quantity
+                const quantity = storedCart[id]
+                addedProduct.quantity = quantity;
+                // step 4: add the added product to the saved cart
+                savedCart.push(addedProduct)
+            }
+            // step 5: set the cart
+            setCart(savedCart)
+        }
+    },[products])// products er value change hoile use effect abar execute hobe
     const  [cart,setCart] = useState([])
     const handleAddToCart = (product)=>{
         // cart.push(product)
